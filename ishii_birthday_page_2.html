@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ishii Birthday Surprise 🎀</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:'Poppins',sans-serif;
+height:100vh;
+background:linear-gradient(135deg,#ffc4dd,#ffd9ec,#ffeaf5);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+/* floating hearts */
+.heart{
+position:absolute;
+font-size:22px;
+animation:float 9s linear infinite;
+opacity:.7;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh) scale(.6);opacity:0}
+40%{opacity:1}
+100%{transform:translateY(-10vh) scale(1.3);opacity:0}
+}
+
+.container{
+background:rgba(255,255,255,0.85);
+backdrop-filter:blur(12px);
+padding:50px 45px;
+border-radius:28px;
+box-shadow:0 20px 45px rgba(0,0,0,.15);
+text-align:center;
+max-width:560px;
+}
+
+h1{
+font-family:'Pacifico',cursive;
+font-size:40px;
+color:#ff4d94;
+margin-bottom:10px;
+}
+
+.subtitle{
+color:#ff6fa5;
+margin-bottom:20px;
+}
+
+#timer{
+font-size:34px;
+font-weight:600;
+color:#ff4d94;
+margin:25px 0;
+}
+
+button{
+background:linear-gradient(135deg,#ff69b4,#ff3f8e);
+border:none;
+color:white;
+padding:16px 30px;
+font-size:18px;
+border-radius:40px;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 10px 25px rgba(255,77,148,.4);
+}
+
+button:hover{transform:scale(1.08)}
+
+button:disabled{
+background:#ddd;
+box-shadow:none;
+cursor:not-allowed;
+}
+
+#message{
+margin-top:25px;
+font-size:24px;
+color:#ff1493;
+font-weight:500;
+}
+
+/* cake */
+.cake{
+font-size:70px;
+margin-top:20px;
+}
+
+/* gift animation */
+.gift{
+font-size:60px;
+animation:bounce 1s infinite alternate;
+margin:15px 0;
+}
+
+@keyframes bounce{
+from{transform:translateY(0)}
+to{transform:translateY(-10px)}
+}
+
+/* confetti */
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg)}
+}
+
+.footer{
+margin-top:25px;
+font-size:13px;
+color:#888;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Ishii's Birthday 🎀</h1>
+<div class="subtitle">A magical surprise is waiting for you 💖</div>
+
+<div class="gift">🎁</div>
+
+<div id="timer"></div>
+
+<button id="giftBtn" disabled>Open Your Surprise</button>
+
+<div id="message"></div>
+
+<div class="cake" id="cake"></div>
+
+<div class="footer">Made with 💗 for Ishii</div>
+
+</div>
+
+<script>
+
+/* floating hearts generator */
+setInterval(()=>{
+const heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML=["💗","💖","💘","💕"][Math.floor(Math.random()*4)]
+heart.style.left=Math.random()*100+"vw"
+heart.style.fontSize=(16+Math.random()*24)+"px"
+document.body.appendChild(heart)
+setTimeout(()=>heart.remove(),9000)
+},500)
+
+
+const birthday=new Date("March 22, 2026 00:00:00").getTime()
+const btn=document.getElementById("giftBtn")
+const message=document.getElementById("message")
+const cake=document.getElementById("cake")
+
+const timer=setInterval(()=>{
+
+const now=new Date().getTime()
+const distance=birthday-now
+
+const days=Math.floor(distance/(1000*60*60*24))
+const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60))
+const minutes=Math.floor((distance%(1000*60*60))/(1000*60))
+const seconds=Math.floor((distance%(1000*60))/1000)
+
+if(distance>0){
+document.getElementById("timer").innerHTML=`${days}d ${hours}h ${minutes}m ${seconds}s`
+}
+
+if(distance<0){
+clearInterval(timer)
+document.getElementById("timer").innerHTML="🎉 Today is the Day!"
+btn.disabled=false
+}
+
+},1000)
+
+btn.onclick=()=>{
+
+message.innerHTML="🎂 Happy Birthday Ishii! 💖 You make the world brighter and today is all about celebrating you!"
+
+cake.innerHTML="🎂"
+
+/* confetti explosion */
+for(let i=0;i<150;i++){
+const conf=document.createElement("div")
+conf.className="confetti"
+conf.style.left=Math.random()*100+"vw"
+conf.style.background=`hsl(${Math.random()*360},70%,60%)`
+conf.style.animationDuration=(2+Math.random()*2)+"s"
+document.body.appendChild(conf)
+setTimeout(()=>conf.remove(),3000)
+}
+
+/* optional music */
+const audio=new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+audio.volume=0.2
+audio.play()
+
+}
+
+</script>
+
+</body>
+</html>
