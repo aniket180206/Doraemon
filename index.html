@@ -77,3 +77,190 @@ border-radius:20px;
 
 .slide{
 position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+opactiy:0;
+transition:opacity 1s;
+}
+
+.slide.active{opacity:1}
+
+/* gift */
+.gift-box{
+font-size:70px;
+margin:15px 0;
+animation:bounce 1.2s infinite alternate;
+}
+
+@keyframes bounce{
+from{transform:translateY(0)}
+to{transform:translateY(-12px)}
+}
+
+/* cake */
+.cake-area{margin-top:20px;font-size:90px;cursor:pointer}
+
+/* floating hearts */
+.heart{
+position:absolute;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh) scale(.5);opacity:0}
+40%{opacity:1}
+100%{transform:translateY(-10vh) scale(1.3);opacity:0}
+}
+
+/* confetti */
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg)}
+}
+
+.secret{
+display:none;
+margin-top:20px;
+font-size:22px;
+color:#ff1493;
+}
+
+.footer{margin-top:25px;font-size:13px;color:#888}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Ishi Turns 6 🎂</h1>
+<div class="subtitle">A magical birthday surprise for you 💖</div>
+
+<div class="gift-box">🎁</div>
+
+<div id="timer"></div>
+
+<button id="giftBtn" disabled>Open Surprise Gift</button>
+<button id="secretBtn" style="display:none">Open Secret Message 💌</button>
+
+<div class="slideshow" id="slideshow">
+
+<!-- ADD YOUR PHOTOS HERE -->
+<img src="photo1.jpg" class="slide active">
+<img src="photo2.jpg" class="slide">
+<img src="photo3.jpg" class="slide">
+
+</div>
+
+<div class="cake-area" id="cake"></div>
+
+<div class="secret" id="secretMsg">
+You are the sweetest girl in the world 🌸💖 Happy 6th Birthday Ishi!
+</div>
+
+<div class="footer">Made with 💗 for Ishi</div>
+
+</div>
+
+<script>
+
+/* hearts */
+setInterval(()=>{
+const heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML=["💗","💖","💕","💘"][Math.floor(Math.random()*4)]
+heart.style.left=Math.random()*100+"vw"
+heart.style.fontSize=(18+Math.random()*26)+"px"
+document.body.appendChild(heart)
+setTimeout(()=>heart.remove(),10000)
+},400)
+
+/* countdown */
+const birthday=new Date("March 22, 2026 00:00:00").getTime()
+const btn=document.getElementById("giftBtn")
+const timer=setInterval(()=>{
+
+const now=new Date().getTime()
+const distance=birthday-now
+
+const d=Math.floor(distance/(1000*60*60*24))
+const h=Math.floor((distance%(1000*60*60*24))/(1000*60*60))
+const m=Math.floor((distance%(1000*60*60))/(1000*60))
+const s=Math.floor((distance%(1000*60))/1000)
+
+if(distance>0){
+document.getElementById("timer").innerHTML=`${d}d ${h}h ${m}m ${s}s`
+}
+
+if(distance<0){
+clearInterval(timer)
+document.getElementById("timer").innerHTML="🎉 It's Your Birthday!"
+btn.disabled=false
+}
+
+},1000)
+
+/* slideshow */
+let slideIndex=0
+setInterval(()=>{
+const slides=document.querySelectorAll(".slide")
+slides.forEach(s=>s.classList.remove("active"))
+slideIndex=(slideIndex+1)%slides.length
+slides[slideIndex].classList.add("active")
+},3000)
+
+/* gift click */
+btn.onclick=()=>{
+
+const cake=document.getElementById("cake")
+const secretBtn=document.getElementById("secretBtn")
+
+cake.innerHTML="🎂 (Click cake to blow candles)"
+secretBtn.style.display="inline-block"
+
+for(let i=0;i<160;i++){
+const c=document.createElement("div")
+c.className="confetti"
+c.style.left=Math.random()*100+"vw"
+c.style.background=`hsl(${Math.random()*360},70%,60%)`
+c.style.animationDuration=(2+Math.random()*2)+"s"
+document.body.appendChild(c)
+setTimeout(()=>c.remove(),3000)
+}
+
+}
+
+/* blow candles */
+document.addEventListener("click",e=>{
+if(e.target.id==="cake"){
+
+e.target.innerHTML="🧁 Candles blown! Make a wish ✨"
+
+const audio=new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+audio.volume=0.2
+
+audio.play()
+
+}
+})
+
+/* secret message */
+document.getElementById("secretBtn").onclick=()=>{
+
+document.getElementById("secretMsg").style.display="block"
+
+}
+
+</script>
+
+</body>
+</html>
